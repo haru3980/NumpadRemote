@@ -1,5 +1,8 @@
-PCにはNumpadReceiver-Setup.exeをダウンロードしてください。Androidスマホにはテンキーリモートアプリをダウンロードして実行してください。（不明なアプリのインストールを許可してない方は許可してください）
-PCにインストールする際にSmartScreenの警告が出ることがありますが、アプリの署名をしていないためなので、詳細情報を押して実行をクリックしてください。
+PCにはNumpadReceiver-Setup.exeをダウンロードしてください。
+Androidスマホにはテンキーリモートアプリをダウンロードして実行してください。（不明なアプリのインストールを許可してください）
+PCにインストールする際にSmartScreenの警告が出ることがあります。
+アプリの署名をしていない為なので、詳細情報を押して実行をクリックしてください。
+
 **exeファイルがWindowsセキュリティに弾かれて起動できない場合のためにPythonプログラムでも実行できるようにしています。（実行の際はMicrosoftstoreからPython3.13をダウンロードしてください）**
 https://apps.microsoft.com/detail/9PNRBTZXMB4Z?hl=neutral&gl=JP&ocid=pdpshare
 
