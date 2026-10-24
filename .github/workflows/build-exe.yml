@@ -18,14 +18,52 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install pyinstaller
+
+      # Python同梱のTk(tk86t.dll)から、起動時に出る葉っぱ(羽根)のアイコンを取り出す
+      - name: Extract Tk feather icon
+        shell: pwsh
+        run: |
+          try {
+            Add-Type -AssemblyName System.Drawing
+            $pyDir = python -c "import sys,os;print(os.path.dirname(sys.executable))"
+            $dll = Join-Path $pyDir "DLLs\tk86t.dll"
+            Write-Host "DLL: $dll  exists: $(Test-Path $dll)"
+            $icon = [System.Drawing.Icon]::ExtractAssociatedIcon($dll)
+            $fs = [System.IO.File]::Create("$PWD\feather.ico")
+            $icon.Save($fs)
+            $fs.Close()
+            Write-Host "Icon extracted: $((Get-Item feather.ico).Length) bytes"
+          } catch {
+            Write-Host "Icon extraction failed: $_"
+          }
+
       - name: Build exe
-        run: pyinstaller --onefile --noconsole --clean --name NumpadReceiver windows/receiver.py
+        shell: pwsh
+        run: |
+          $iconArgs = @()
+          if (Test-Path feather.ico) { $iconArgs = @('--icon', 'feather.ico') }
+          pyinstaller --onefile --noconsole --clean @iconArgs --name NumpadReceiver windows/receiver.py
+
+      - name: Build installer (Inno Setup)
+        shell: pwsh
+        run: |
+          $ver = "1.0.0"
+          if ($env:GITHUB_REF -like 'refs/tags/v*') { $ver = $env:GITHUB_REF.Substring(11) }
+          choco install innosetup -y --no-progress
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "/DMyAppVersion=$ver" windows\installer.iss
+          if ($LASTEXITCODE -ne 0) { throw "Inno Setup failed" }
+
       - uses: actions/upload-artifact@v4
         with:
-          name: NumpadReceiver-exe
-          path: dist/NumpadReceiver.exe
+          name: NumpadReceiver-windows
+          path: |
+            dist/NumpadReceiver.exe
+            windows/Output/NumpadReceiver-Setup.exe
+
       - name: Attach to release (only for v* tags)
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/NumpadReceiver.exe
+          files: |
+            dist/NumpadReceiver.exe
+            windows/Output/NumpadReceiver-Setup.exe
