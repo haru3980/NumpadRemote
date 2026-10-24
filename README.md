@@ -6,7 +6,7 @@ PCにインストールする際にSmartScreenの警告が出ることがあり�
 アプリの署名をしていない為なので、詳細情報を押して実行をクリックしてください。
 
 **exeファイルがWindowsセキュリティに弾かれて起動できない場合のためにPythonプログラムでも実行できるようにしています。（実行の際はMicrosoftstoreからPython3.13をダウンロードしてください）**
-https://apps.microsoft.com/detail/9PNRBTZXMB4Z?hl=neutral&gl=JP&ocid=pdpshare
+https://apps.microsoft.com/detail/9PNRBTZXMB4Z?hl=neutral&gl=JP&ocid=pdpshare（PythonのダウンロードURL）
 
 既存のWindows用レシーバー（Python 3標準ライブラリ製 `receiver.py`）と完全に互換性のあるプロトコルで通信します。
 
